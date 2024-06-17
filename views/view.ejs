@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DatabaseList</title>
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="A class-less example, without dependencies." />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.classless.min.css"
+    />
+</head>
+
+<body>
+    <div>
+    <h2>Список наявних матеріалів</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Назва матеріалу</th>
+            <th>Ціна</th>
+            <th>Кількість</th>
+            <th>Наявність</th>
+            <th>Опис</th>
+        </tr>
+        <% materials.forEach(material => { %>
+            <tr>
+                <td><%= material.material_ID %></td>
+                <td><%= material.material_name %></td>
+                <td><%= material.price %></td>
+                <td><%= material.quantity %> шт.</td>
+                <td><%= material.availability %></td>
+                <td><%= material.description %></td>
+            </tr>
+        <% }) %>
+    </table>
+
+    <h2>Список наявних складів</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Назва складу</th>
+            <th>Адреса</th>
+            <th>Контактна інформація</th>
+        </tr>
+        <% warehouses.forEach(warehouse => { %>
+            <tr>
+                <td><%= warehouse.warehouse_id %></td>
+                <td><%= warehouse.warehouse_name %></td>
+                <td><%= warehouse.address %></td>
+                <td><%= warehouse.contact_information %></td>
+            </tr>
+        <% }) %>
+    </table>
+    
+
+    <h2>Список проведених операцій</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Тип операції</th>
+            <th>Дата операції</th>
+            <th>ID матеріалу</th>
+            <th>Кількість</th>
+            <th>ID складу</th>
+        </tr>
+        <% operations.forEach(operation => { %>
+            <tr>
+                <td><%= operation.operation_id %></td>
+                <td><%= operation.operation_type %></td>
+                <td><%= operation.operation_date %></td>
+                <td><%= operation.material_id %></td>
+                <td><%= operation.quantity %></td>
+                <td><%= operation.target_warehouse_id %></td>
+            </tr>
+        <% }) %>
+    </table>
+    
+
+    <h2>Список постачальників матеріалів</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Назва компанії</th>
+            <th>Контактна інформація</th>
+            <th>Додаткова інформація</th>
+        </tr>
+        <% suppliers.forEach(supplier => { %>
+            <tr>
+                <td><%= supplier.supplier_id %></td>
+                <td><%= supplier.company_name %></td>
+                <td><%= supplier.contact_information %></td>
+                <td><%= supplier.additional_info %></td>
+            </tr>
+        <% }) %>
+    </table>
+</div>
+
+<div>
+    <h3>Створити матеріал</h3>
+    <form action="/materials" method="post">
+        <input type="text" id="material_name" name="material_name" placeholder="Введіть назву матеріалу" required><br><br>
+        <input type="text" id="price" name="price" placeholder="Введіть ціну" required><br><br>
+        <input type="text" id="quantity" name="quantity" placeholder="Введіть кількість" required><br><br>
+        <input type="text" id="availability" name="availability" placeholder="Введіть наявність" required><br><br>
+        <textarea id="description" name="description" rows="4" cols="50" placeholder="Введіть опис" required></textarea><br><br>
+        <input type="submit" value="Створити матеріал">
+    </form>
+    <h3>Видалити матеріал</h3>
+    <form action="/materials/delete" method="post">
+        <input type="text" id="material_id" name="material_id" placeholder="Введіть ID матеріалу" required><br><br>
+    
+        <input type="submit" value="Видалити матеріал">
+    </form>
+    <h3>Оновити матеріал</h3>
+    <form action="/materials/update" method="post">
+        <input type="text" id="material_id" name="material_id" placeholder="ID матеріалу, який потрібно оновити:" required><br><br>
+        <input type="text" id="material_name" name="material_name" placeholder="Оновити назву матеріалу:" required><br><br>
+        <input type="text" id="price" name="price" placeholder="Оновити ціну:" required><br><br>
+        <input type="text" id="quantity" name="quantity" placeholder="Оновити кількість:" required><br><br>
+        <input type="text" id="availability" name="availability"  placeholder="Оновити наявність матеріалу" required><br><br>
+        <textarea id="description" name="description" rows="4" cols="50" placeholder="Новий опис:" required></textarea><br><br>
+        <input type="submit" value="Оновити матеріал">
+    </form>
+</div>
+
+<div>
+    <h3>Створити склад</h3>
+<form action="/warehouse/create" method="post">
+    <input type="text" id="warehouse_name" name="warehouse_name" placeholder="Назва складу" required><br><br>
+    <textarea id="address" name="address" rows="4" cols="50" placeholder="Адреса складу" required></textarea><br><br>
+    <textarea id="contact_information" name="contact_information" rows="4" cols="50" placeholder="Контактна інформація" required></textarea><br><br>
+    <input type="submit" value="Створити склад">
+</form>
+<h3>Видалити склад</h3>
+<form action="/warehouse/delete" method="post">
+    <input type="text" id="warehouse_id" name="warehouse_id" placeholder="ID складу, який потрібно видалити" required><br><br>
+    <input type="submit" value="Видалити склад">
+</form>
+</div>
+
+<div>
+    <h3>Додати постачальника</h3>
+<form action="/suppliers/add" method="post">
+    <input type="text" id="company_name" name="company_name" placeholder="Назва компанії" required><br><br>
+    <textarea id="contact_information" name="contact_information" rows="4" cols="50" placeholder="Контактна інформація" required></textarea><br><br>
+    <textarea id="additional_info" name="additional_info" rows="4" cols="50" placeholder="Додаткова інформація"></textarea><br><br>
+    <input type="submit" value="Додати постачальника">
+</form>
+<h3>Видалити постачальника</h3>
+<form action="/suppliers/delete" method="post">
+    <input type="text" id="supplier_id" name="supplier_id" placeholder="ID постачальника, якого потрібно видалити" required><br><br>
+    <input type="submit" value="Видалити постачальника">
+</form>
+</div>
+
+<div>
+    <h3>Додати нову операцію</h3>
+    <form action="/operations/add" method="post">
+        <select id="operation_type" name="operation_type" required>
+            <option value="" disabled selected>Виберіть тип операції</option>
+            <option value="receipt">Приймання</option>
+            <option value="shipment">Відправлення</option>
+            <option value="transfer">Переміщення</option>
+        </select><br><br>
+        <input type="date" id="operation_date" name="operation_date" placeholder="Дата операції" required><br><br>
+        <input type="number" id="material_id" name="material_id" placeholder="ID матеріалу" required><br><br>
+        <input type="number" id="quantity" name="quantity" placeholder="Кількість" required><br><br>
+        <input type="number" id="target_warehouse_id" name="target_warehouse_id" placeholder="ID цільового складу" required><br><br>
+        <input type="submit" value="Додати операцію">
+    </form>       
+    <h3>Видалити операцію</h3>
+    <form action="/operations/delete" method="post">
+        <input type="number" id="operation_id" name="operation_id" placeholder="ID операції, яку потрібно видалити" required><br><br>
+        <input type="submit" value="Видалити операцію">
+    </form>
+</div>
+
+</body>
+</html>
